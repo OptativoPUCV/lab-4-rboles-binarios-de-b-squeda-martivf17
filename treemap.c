@@ -101,22 +101,35 @@ void removeNode(TreeMap * tree, TreeNode* node) {
     if( node == NULL) return;
 
     // EL NODO NO TIENE HIJOS
-    if(node->left == NULL && node->right == NULL){
+    if (node->left == NULL && node->right == NULL){
         if(node->parent == NULL){
             free(node->pair);
             free(node);
             tree->root = NULL;
         }
-        else{
-            if(node->parent->left == node){
-                node->parent->left = NULL;
-            }
-            else{
-                node->parent->right = NULL;
-            }
+        else if(node->parent->left == node){
             free(node->pair);
             free(node);
+            node->parent->left = NULL;
         }
+        else{
+            free(node->pair);
+            free(node);
+            node->parent->right = NULL;
+        }
+    }
+    // EL NODO TIENE UN HIJO
+    else if((node->left == NULL && node->right != NULL)|| (node->left != NULL && node->right == NULL)){
+        if(node->parent->left == node){
+            node->parent->left = NULL;
+        }
+        else{
+            node->parent->right = NULL;
+        }
+        free(node->pair);
+        free(node);
+
+
     }
 }
 
