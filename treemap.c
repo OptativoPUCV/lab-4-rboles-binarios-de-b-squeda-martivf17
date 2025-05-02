@@ -112,12 +112,16 @@ void removeNode(TreeMap * tree, TreeNode* node) {
         // Si no estamos en la raiz tenemos que identificar si es hijo izq. o der.
         // El nodo actual (node) es el hijo izquierdo de su padre (parent)?
         else if(node->parent->left == node){
+            TreeNode* child = (node->left != NULL) ? node->left : node->right;
+            node->parent->left = child;
             free(node->pair);
             free(node);
             node->parent->left = NULL;
         }
         // Aqui estamos cuando el nodo sea el hijo derecho
         else{
+            TreeNode* child = (node->right != NULL) ? node->left : node->right;
+            node->parent->right = child;
             free(node->pair);
             free(node);
             node->parent->right = NULL;
