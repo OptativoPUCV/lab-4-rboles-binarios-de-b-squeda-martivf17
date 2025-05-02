@@ -37,14 +37,55 @@ TreeNode * createTreeNode(void* key, void * value) {
 }
 
 TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
+    TreeMap *new = (TreeMap *) malloc(sizeof(TreeMap));
+    if (new == NULL){
+        return NULL;
+    }
+    new->root = NULL;
+    new->current = NULL;
+    new->lower_than = lower_than;
 
-    //new->lower_than = lower_than;
-    return NULL;
+    return new;
 }
 
-
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
+    if(tree->root == NULL){
+        TreeNode *newNode = createTreeNode(key, value);
+        tree->root = newNode;
+        return;
+    }
 
+    TreeNode *aux = tree->root;
+    while (aux != NULL){
+        if(is_equal(aux, aux->pair->key, key))
+        {
+            return;
+        }
+        if(tree->lower_than(key, aux->pair->key)){
+            if(aux->left == NULL){
+                TreeNode *newNode = createTreeNode(key, value);
+                aux->left = newNode;
+                newNode->parent = aux;
+                tree->current = newNode;
+                return;
+            }
+            else{
+                aux = aux->left;
+            }
+        }
+        else{
+            if(aux->right == NULL){
+                TreeNode *newNode = createTreeNode(key, value);
+                aux->right = newNode;
+                newNode->parent = aux;
+                tree->current = newNode;
+                return;
+            }
+            else{
+                aux = aux->right;
+            }
+        }
+    }
 }
 
 TreeNode * minimum(TreeNode * x){
@@ -70,6 +111,21 @@ void eraseTreeMap(TreeMap * tree, void* key){
 
 
 Pair * searchTreeMap(TreeMap * tree, void* key) {
+    TreeNode *aux = tree->root;
+
+    while (aux != NULL){
+        if(is_equal(aux, aux->pair->key, key))
+        {
+            tree->current = aux;
+            return aux->pair;
+        }
+        if(tree->lower_than(key, aux->pair->key)){
+            aux = aux->left;
+        }
+        else{
+            aux = aux->right;
+        }
+    }
     return NULL;
 }
 
