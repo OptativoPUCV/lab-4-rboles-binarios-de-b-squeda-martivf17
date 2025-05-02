@@ -98,20 +98,25 @@ TreeNode * minimum(TreeNode * x){
 
 
 void removeNode(TreeMap * tree, TreeNode* node) {
+    // Si el nodo no existe no ocurre nada
     if( node == NULL) return;
 
     // EL NODO NO TIENE HIJOS
     if (node->left == NULL && node->right == NULL){
+        // Si estamos en el nodo que es la RAIZ, su padre sera NULL, liberamos el nodo y dejamos la raiz en null
         if(node->parent == NULL){
             free(node->pair);
             free(node);
             tree->root = NULL;
         }
+        // Si no estamos en la raiz tenemos que identificar si es hijo izq. o der.
+        // El nodo actual (node) es el hijo izquierdo de su padre (parent)?
         else if(node->parent->left == node){
             free(node->pair);
             free(node);
             node->parent->left = NULL;
         }
+        // Aqui estamos cuando el nodo sea el hijo derecho
         else{
             free(node->pair);
             free(node);
@@ -119,7 +124,7 @@ void removeNode(TreeMap * tree, TreeNode* node) {
         }
     }
     // EL NODO TIENE UN HIJO
-    else if((node->left == NULL && node->right != NULL)|| (node->left != NULL && node->right == NULL)){
+    else if((node->left == NULL && node->right != NULL) || (node->left != NULL && node->right == NULL)){
         if(node->parent->left == node){
             node->parent->left = NULL;
         }
@@ -128,8 +133,6 @@ void removeNode(TreeMap * tree, TreeNode* node) {
         }
         free(node->pair);
         free(node);
-
-
     }
 }
 
